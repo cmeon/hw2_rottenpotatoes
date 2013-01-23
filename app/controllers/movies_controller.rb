@@ -1,13 +1,21 @@
 class MoviesController < ApplicationController
 
+  require 'movies_helper'
+  
   def show
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
     # will render app/views/movies/show.<extension> by default
   end
-
+  
   def index
-    @movies = Movie.all
+    if @sort_order = session[:sorting]
+      @order=session[:as].to_i
+      @movies = Movie.find(:all, :order => "#{@sort_order} #{['ASC', 'DESC'][@order]}")
+      @order = [1,0][@order]
+    else
+      @movies = Movie.all
+    end
   end
 
   def new
@@ -38,7 +46,11 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
   
-  def sort_by
-    @movies = Movie.order(params[:by])
+  def sort
+    #@movies = Movie.find(:all, :order => "#{params[:by]} ASC")
+    #@movies = Movie.order("#{params[:by]} ASC")
+    session[:sorting] = params[:by]
+    session[:as] = params[:as]
+    redirect_to :action => 'index'
   end
 end
