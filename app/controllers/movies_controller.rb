@@ -10,9 +10,15 @@ class MoviesController < ApplicationController
   
   def index
     if @sort_order = params[:sort]
-      #@order=session[:as].to_i
+      #CSS highlighting changes
+      if @sort_order == "title"
+        @title_tab = "hilite"
+      elsif @sort_order == "release_date"
+        @release_date_tab = "hilite"
+      end
+      
+      #movie rendering in specified order
       @movies = Movie.find(:all, :order => "#{@sort_order}") # #{['ASC', 'DESC'][@order]}")
-      #@order = [1,0][@order]
     else
       @movies = Movie.all
     end
