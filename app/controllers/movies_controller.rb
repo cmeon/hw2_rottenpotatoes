@@ -9,10 +9,10 @@ class MoviesController < ApplicationController
   end
   
   def index
-    if @sort_order = session[:sorting]
-      @order=session[:as].to_i
-      @movies = Movie.find(:all, :order => "#{@sort_order} #{['ASC', 'DESC'][@order]}")
-      @order = [1,0][@order]
+    if @sort_order = params[:id]
+      #@order=session[:as].to_i
+      @movies = Movie.find(:all, :order => "#{@sort_order.slice(0..-8)}") # #{['ASC', 'DESC'][@order]}")
+      #@order = [1,0][@order]
     else
       @movies = Movie.all
     end
