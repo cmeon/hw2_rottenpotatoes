@@ -5,9 +5,9 @@
 %table#movies
   %thead
     %tr
-      %th#hilite= link_to 'Movie Title', :id =>:title_header #:action=>:sort,  #:by=>:title, :as=>@order
+      %th#hilite= link_to 'Movie Title', movies_path(:sort => 'title'), :id => :title_header #:action=>:sort,  #:by=>:title, :as=>@order
       %th Rating
-      %th#hilite= link_to 'Release Date', :id => :release_date_header #:action=>:sort, #:by=>:release_date, :as=>@order
+      %th#hilite= link_to 'Release Date', movies_path(:sort => 'release_date'), :id => :release_date_header #:action=>:sort, #:by=>:release_date, :as=>@order
       %th More Info
   %tbody
     - @movies.each do |movie|

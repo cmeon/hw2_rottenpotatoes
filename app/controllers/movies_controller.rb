@@ -9,9 +9,9 @@ class MoviesController < ApplicationController
   end
   
   def index
-    if @sort_order = params[:id]
+    if @sort_order = params[:sort]
       #@order=session[:as].to_i
-      @movies = Movie.find(:all, :order => "#{@sort_order.slice(0..-8)}") # #{['ASC', 'DESC'][@order]}")
+      @movies = Movie.find(:all, :order => "#{@sort_order}") # #{['ASC', 'DESC'][@order]}")
       #@order = [1,0][@order]
     else
       @movies = Movie.all
@@ -44,13 +44,5 @@ class MoviesController < ApplicationController
     @movie.destroy
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
-  end
-  
-  def sort
-    #@movies = Movie.find(:all, :order => "#{params[:by]} ASC")
-    #@movies = Movie.order("#{params[:by]} ASC")
-    session[:sorting] = params[:by]
-    session[:as] = params[:as]
-    redirect_to :action => 'index'
   end
 end
