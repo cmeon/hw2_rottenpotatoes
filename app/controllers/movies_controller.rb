@@ -1,7 +1,4 @@
 class MoviesController < ApplicationController
-
-  require 'movies_helper'
-  
   def show
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
@@ -9,6 +6,14 @@ class MoviesController < ApplicationController
   end
   
   def index
+      #movie ratings categories
+    @all_ratings = Movie.ratings
+    
+      #ratings for checkbox
+    if params[:ratings]
+       @checked_ratings = params[:ratings].keys
+    end
+    
     if @sort_order = params[:sort]
       #CSS highlighting changes
       if @sort_order == "title"
@@ -16,7 +21,6 @@ class MoviesController < ApplicationController
       elsif @sort_order == "release_date"
         @release_date_tab = "hilite"
       end
-      
       #movie rendering in specified order
       @movies = Movie.find(:all, :order => "#{@sort_order}") # #{['ASC', 'DESC'][@order]}")
     else
