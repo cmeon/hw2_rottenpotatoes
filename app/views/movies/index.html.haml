@@ -2,13 +2,12 @@
 
 %h1 All Movies
 
-= form_tag movies_path, :method => :get do
+= form_tag movies_path, :method => :get do, :id => :ratings_form
   Include: 
-  - @all_ratings.each do |rating|
+  - @all_ratings.each do |rating, checked|
     = rating
-    = check_box_tag "ratings[#{rating}]"
-  = submit_tag 'Refresh'
-  %p=@checked_ratings
+    = check_box_tag :id = "ratings_#{rating}", "ratings[#{rating}]", 1, checked
+  = submit_tag 'Refresh' :id => :ratings_submit
 
 %table#movies
   %thead
