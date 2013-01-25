@@ -12,7 +12,9 @@ class MoviesController < ApplicationController
       @all_ratings[rating] = true
     end
       #ratings for checkbox
-    if session[:ratings] = params[:ratings]
+    if session[:ratings]
+       if params[:ratings]
+          session[:ratings] = params[:ratings]
       @all_ratings.each do |rating, check|
           @all_ratings[rating] = false unless session[:ratings].key?(rating)
       end
