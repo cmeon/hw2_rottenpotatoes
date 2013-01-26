@@ -6,15 +6,17 @@ class MoviesController < ApplicationController
   end
   
   def index
-    #ratings for checkbox
+    
+    @all_movie_ratings = session[:rating_categories]
+    #ratings selected
     if params[:ratings]
       @all_ratings = Hash.new
       Movie.ratings.each do |rating|
-          if params[:ratings].key?(rating)
-            @all_ratings[rating] = true
-          else
-            @all_ratings[rating] = false
-          end
+        if params[:ratings].key?(rating)
+          @all_ratings[rating] = true
+        else
+          @all_ratings[rating] = false
+        end
       end
       session[:rating_categories] = @all_ratings
       session[:ratings] = params[:ratings].keys
@@ -25,12 +27,12 @@ class MoviesController < ApplicationController
     if session[:ratings]
       @checked_ratings = session[:ratings]
     else
-      @all_ratings = Hash.new
+      @all_movie_ratings = Hash.new
       Movie.ratings.each do |rating|
-        @all_ratings[rating] = true
+        @all_movie_ratings[rating] = true
       end
       session[:rating_categories] = @all_ratings
-      @checked_ratings = @all_ratings.keys
+      @checked_ratings = @all_movie_ratings.keys
     end
     
     #CSS highlighting changes
@@ -45,7 +47,7 @@ class MoviesController < ApplicationController
       session[:sorting_order] = params[:sort]
       redirect_to movies_path
     end
-    @all_ratings = session[:rating_categories]
+    
     @movies = Movie.find(:all, :conditions => {:rating => @checked_ratings}, :order => "#{session[:sorting_order]}")
   end
   
