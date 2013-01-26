@@ -40,8 +40,7 @@ class MoviesController < ApplicationController
       session[:sorting_order] = params[:sort]
       redirect_to movies_path
     end
-    
-    @all_movie_ratings = session[:rating_categories]
+
     @movies = Movie.find(:all, :conditions => {:rating => @checked_ratings}, :order => "#{session[:sorting_order]}")
   end
   
