@@ -23,6 +23,7 @@ class MoviesController < ApplicationController
     #checkboxes checkboxed
     if session[:ratings]
       @checked_ratings = session[:ratings]
+      @all_ratings = session[:rating_categories]
     else
       session[:rating_categories] = @all_ratings
       @checked_ratings = @all_ratings.keys
