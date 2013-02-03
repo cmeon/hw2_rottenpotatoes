@@ -12,43 +12,36 @@ class MoviesController < ApplicationController
     end
     #ratings selected
     if params[:ratings]
-      @all_ratings.each_key do |rating|
+        @all_ratings.each_key do |rating|
         @all_ratings[rating] = false unless params[:ratings].key?(rating)
       end
-      session[:rating_categories] = @all_ratings
-      session[:ratings] = params[:ratings].keys
-      redirect_to movies_path
-    end
-    
+      @checked_ratings = params[:ratings].keys
+      session[:ratings]=params[:ratings]
     #checkboxes checkboxed
-    if session[:ratings]
-      @checked_ratings = session[:ratings]
-      @all_ratings = session[:rating_categories]
+    elsif session[:ratings]
+     redirect_to movies_path(:sort=>params[:sort], :ratings=>session[:ratings]) and return
     else
-      session[:rating_categories] = @all_ratings
       @checked_ratings = @all_ratings.keys
     end
-    
-    #CSS highlighting changes
-    if session[:sorting_order] == "title"
-      @title_tab = "hilite"
-    elsif  session[:sorting_order] == "release_date"
-      @release_date_tab = "hilite"
-    end
-    
+
     #movie rendering in specified order
     if params[:sort]
-      session[:sorting_order] = params[:sort]
-      redirect_to movies_path
+      @sorting = session[:sort] = params[:sort]
+      if params[:sort] == "title"
+        @title_tab = "hilite"
+      elsif params[:sort] == "release_date"
+        @release_date_tab = "hilite"
+      end
+    elsif session[:sort]
+      redirect_to movies_path(:sort=>session[:sort], :ratings=>session[:ratings], ) and return
     end
-
-    @movies = Movie.find(:all, :conditions => {:rating => @checked_ratings}, :order => "#{session[:sorting_order]}")
+    @movies = Movie.find(:all, :conditions => {:rating => @checked_ratings}, :order => @sorting)
   end
   
   def new
     # default: render 'new' template
   end
-
+  
   def create
     @movie = Movie.create!(params[:movie])
     flash[:notice] = "#{@movie.title} was successfully created."
