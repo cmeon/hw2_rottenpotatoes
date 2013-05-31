@@ -4,7 +4,7 @@ class MoviesController < ApplicationController
     @movie = Movie.find(id) # look up movie by unique ID
     # will render app/views/movies/show.<extension> by default
   end
-  
+
   def index
     @all_ratings = Hash.new
     Movie.ratings.each do |rating|
@@ -37,11 +37,11 @@ class MoviesController < ApplicationController
     end
     @movies = Movie.find(:all, :conditions => {:rating => @checked_ratings}, :order => @sorting)
   end
-  
+
   def new
     # default: render 'new' template
   end
-  
+
   def create
     @movie = Movie.create!(params[:movie])
     flash[:notice] = "#{@movie.title} was successfully created."

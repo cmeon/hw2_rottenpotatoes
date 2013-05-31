@@ -17,14 +17,14 @@ end
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'therubyracer'              
+  gem 'therubyracer'
   gem 'sass-rails'#, "  ~> 3.1.7"
   gem 'coffee-rails'#, "~> 3.2.2"
   gem 'uglifier'
 end
 
 gem 'jquery-rails'
-
+gem 'newrelic_rpm'
 # Use unicorn as the web server
 # gem 'unicorn'
 
